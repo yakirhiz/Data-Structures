@@ -1,5 +1,7 @@
 public class Trie {
 
+    private final int ALPHABET_SIZE = 26;
+
     private TrieNode root;
 
     public Trie() {
@@ -18,6 +20,34 @@ public class Trie {
         }
 
         node.isWord = true;
+    }
+
+    public void delete(String word) {
+        delete(root, word, 0);
+    }
+
+    public boolean delete(TrieNode node, String word, int index) {
+        if (node == null) {
+            return false;
+        }
+
+        if (index == word.length()) {
+            if (node.isWord) {
+                node.isWord = false;
+            }
+
+            return node.isEmpty();
+        }
+
+        char c = word.charAt(index);
+
+        if (delete(node.children[c - 'a'], word, index + 1)) {
+            node.children[c - 'a'] = null;
+
+            return node.isWord == false && node.isEmpty();
+        }
+
+        return false;
     }
 
     public boolean search(String word) {
@@ -53,8 +83,18 @@ public class Trie {
         boolean isWord;
 
         public TrieNode() {
-            this.children = new TrieNode[26];
+            this.children = new TrieNode[ALPHABET_SIZE];
             this.isWord = false;
+        }
+
+        public boolean isEmpty() {
+            for (TrieNode child : this.children) {
+                if (child != null) {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
