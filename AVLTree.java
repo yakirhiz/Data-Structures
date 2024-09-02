@@ -1,6 +1,5 @@
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  *
@@ -591,21 +590,18 @@ public class AVLTree<K extends Comparable<K>, V> {
      *
      * Time Complexity: O(n)
      */
-    public String bfs() {
-        StringBuilder sb = new StringBuilder();
+    public void bfs(Consumer<K> consumer) {
+        if (this.root == null) return;
 
         Queue<AVLNode> q = new LinkedList<>();
         q.add(this.root);
 
         while (!q.isEmpty()) {
             AVLNode curr = q.poll();
-            sb.append(curr.value); // visit(curr)
+            consumer.accept(curr.key); // visit(curr)
             if (curr.left != null) q.add(curr.left);
             if (curr.right != null) q.add(curr.right);
-            sb.append(!q.isEmpty() ? " " : "");
         }
-
-        return sb.toString();
     }
 
     /**
@@ -614,6 +610,9 @@ public class AVLTree<K extends Comparable<K>, V> {
      * Time Complexity: O(n)
      */
     public String dfs() {
+        if (this.root == null)
+            return "";
+
         StringBuilder sb = new StringBuilder();
 
         Stack<AVLNode> s = new Stack<>();
@@ -628,6 +627,36 @@ public class AVLTree<K extends Comparable<K>, V> {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Return the levels of the tree (BFS traversal)
+     *
+     * Time Complexity: O(n)
+     */
+    public List<List<K>> levels() {
+        if (this.root == null)
+            return null;
+
+        List<List<K>> levels = new ArrayList<>();
+
+        Queue<AVLNode> q = new LinkedList<>();
+        q.add(this.root);
+
+        while (!q.isEmpty()) {
+            List<K> level = new ArrayList<>();
+
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                AVLNode curr = q.poll();
+                level.add(curr.key);
+                if (curr.left != null) q.add(curr.left);
+                if (curr.right != null) q.add(curr.right);
+            }
+            levels.add(level);
+        }
+
+        return levels;
     }
 
     /**
