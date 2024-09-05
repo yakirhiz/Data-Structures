@@ -84,21 +84,17 @@ class LRUCache<K, V> {
     }
 
     private void deleteNode(Node node) {
-        // Could be reformed to four conditions
-        if (node.next == null && node.prev == null) {
-            head = tail = null;
+        // This logic could be refactored into four separate conditions for clarity.
+        if (node.next == null) {
+            tail = node.prev;
         } else {
-            if (node.next == null) {
-                tail = tail.prev;
-            } else {
-                node.next.prev = node.prev;
-            }
+            node.next.prev = node.prev;
+        }
 
-            if (node.prev == null) {
-                head = head.next;
-            } else {
-                node.prev.next = node.next;
-            }
+        if (node.prev == null) {
+            head = node.next;
+        } else {
+            node.prev.next = node.next;
         }
     }
 }

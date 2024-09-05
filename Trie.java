@@ -1,6 +1,6 @@
 public class Trie {
 
-    private final int ALPHABET_SIZE = 26;
+    private static final int ALPHABET_SIZE = 26;
 
     private TrieNode root;
 
@@ -26,7 +26,7 @@ public class Trie {
         delete(root, word, 0);
     }
 
-    public boolean delete(TrieNode node, String word, int index) {
+    private boolean delete(TrieNode node, String word, int index) {
         if (node == null) {
             return false;
         }
